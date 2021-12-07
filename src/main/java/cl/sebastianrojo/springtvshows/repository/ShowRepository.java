@@ -1,0 +1,18 @@
+package cl.sebastianrojo.springtvshows.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import cl.sebastianrojo.springtvshows.model.Show;
+
+/**
+ * ShowRepository
+ */
+@Repository
+public interface ShowRepository extends JpaRepository<Show, Long> {
+
+    List<Show> findAll();
+
+}
