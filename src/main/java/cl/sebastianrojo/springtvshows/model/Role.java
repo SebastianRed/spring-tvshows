@@ -17,14 +17,13 @@ public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, unique = true)
+    @Column(name = "id_role", nullable = false, unique = true)
     private Long id;
 
     private String name;
 
-    @ManyToMany(mappedBy = "role")
+    @ManyToMany(mappedBy = "roles")
     private List<User> users;
-
 
     public Role() {
     }
@@ -48,6 +47,14 @@ public class Role {
 
     public void setName(String name) {
         this.name = name;
+    }
+    
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
     
 }

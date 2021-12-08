@@ -20,16 +20,16 @@ public class Rating {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, unique = true)
+    @Column(name = "id_rating", nullable = false, unique = true)
     private Long id;
 
     private Integer rating;
     
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany(mappedBy = "rating")
+    @ManyToMany(mappedBy = "ratings")
     private List<Show> shows;
 
     public Rating() {
@@ -54,6 +54,22 @@ public class Rating {
 
     public void setRating(Integer rating) {
         this.rating = rating;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<Show> getShows() {
+        return shows;
+    }
+
+    public void setShows(List<Show> shows) {
+        this.shows = shows;
     }
     
 }
