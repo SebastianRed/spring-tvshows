@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,8 +22,6 @@ import cl.sebastianrojo.springtvshows.model.User;
 import cl.sebastianrojo.springtvshows.service.RatingService;
 import cl.sebastianrojo.springtvshows.service.ShowService;
 import cl.sebastianrojo.springtvshows.service.UserService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * ShowController
@@ -60,7 +59,7 @@ public class ShowController {
     @GetMapping(value = "/{id}")
     public String getShow(@PathVariable("id") Long id, Model model, Principal principal) {
         Show show = showService.findShowById(id);
-        User creatorShow = show.getUser();
+        User creatorShow = show.getUsers();
         String email = principal.getName();
         User currentUser = userService.findUserByEmail(email);
         List<Rating> showRatings = show.getRatings();
@@ -97,7 +96,7 @@ public class ShowController {
         } else {
             String email = principal.getName();
             User creatorShow = userService.findUserByEmail(email);
-            show.setUser(creatorShow);
+            show.setUsers(creatorShow);
             showService.saveShow(show);
             return "redirect:/shows";
         }
@@ -121,7 +120,7 @@ public class ShowController {
             session.setAttribute("id", show.getId());
             return "redirect:/shows/createError";
         } else {
-            editedShow.setUser(creatorShow);
+            editedShow.setUsers(creatorShow);
             showService.updateShow(editedShow);
             return "redirect:/shows";
         }
