@@ -8,22 +8,24 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 /**
  * Role
  */
 @Entity
+@Table(name="roles")
 public class Role {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_role", nullable = false, unique = true)
-    private Long id;
-
-    private String name;
-
-    @ManyToMany(mappedBy = "roles")
-    private List<User> users;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="role_id", nullable = false, unique = true)
+	private Long id;
+	
+	private String name;
+	
+	@ManyToMany(mappedBy = "roles")
+	private List<User> users;
 
     public Role() {
     }
@@ -56,5 +58,5 @@ public class Role {
     public void setUsers(List<User> users) {
         this.users = users;
     }
-    
+
 }

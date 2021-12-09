@@ -2,45 +2,55 @@ package cl.sebastianrojo.springtvshows.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
+import javax.validation.constraints.Size;
 
 /**
  * User
  */
 @Entity
+@Table(name="users")
 public class User {
 
-    @Id
-    @Column(name = "id_user", nullable = false, unique = true)
-    private Long id;
-    private String username;
-    private String email;
-    private String password;
-    @Transient
-    private String passwordConfirmation;
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private List<Show> shows;
-
-    @OneToMany(mappedBy = "user")
-    @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Rating> ratings;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "id_user"), inverseJoinColumns = @JoinColumn(name = "id_role"))
-    private List<Role> roles;
-    
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="user_id", nullable = false, unique = true)
+	private Long id;
+	
+	@Size(min = 3, message = "Username must be present")
+	private String username;
+	
+	@Size(min = 5, message = "Email must be greater than 5 characters")
+	private String email;
+	
+	@Size(min = 8, message = "Password must be greater than 8 characters")
+	private String password;
+	
+	@Transient
+	private String passwordConfirmation;
+	
+	@OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
+	private List<Show> shows;
+	
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	private List<Rating> ratings;
+	
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private List<Role> roles;
+	
     public User() {
     }
 

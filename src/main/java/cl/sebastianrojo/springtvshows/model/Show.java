@@ -13,27 +13,34 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 /**
  * Show
  */
 @Entity
+@Table(name="shows")
 public class Show {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_show", nullable = false, unique = true)
-    private Long id;
-    private String showTitle;
-    private String showNetwork;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "show_rating", joinColumns = @JoinColumn(name = "id_show"), inverseJoinColumns = @JoinColumn(name = "id_rating"))
-    private List<Rating> ratings;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="show_id", nullable = false, unique = true)
+	private Long id;
+	
+	@Size(min=1, message = "Title must be present")
+	private String showTitle;
+	
+	@Size(min=1, message = "Network must be present")
+	private String showNetwork;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	private User users;
+	
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinTable(name = "shows_ratings", joinColumns = @JoinColumn(name = "show_id"), inverseJoinColumns = @JoinColumn(name = "rating_id"))
+	private List<Rating> ratings;
     
     public Show() {
     }
@@ -52,12 +59,12 @@ public class Show {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public User getUsers() {
+        return users;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUsers(User users) {
+        this.users = users;
     }
 
     public List<Rating> getRatings() {

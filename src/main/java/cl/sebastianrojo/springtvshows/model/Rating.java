@@ -1,7 +1,5 @@
 package cl.sebastianrojo.springtvshows.model;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,28 +7,34 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 /**
  * Rating
  */
 @Entity
+@Table(name="ratings")
 public class Rating {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_rating", nullable = false, unique = true)
-    private Long id;
-
-    private Integer rating;
-    
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @ManyToMany(mappedBy = "ratings")
-    private List<Show> shows;
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="rating_id", nullable = false, unique = true)
+	private Long id;
+	
+	@Min(1)
+	@Max(5)
+	private Integer rating;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "user_id")
+	private User user;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "show_id")
+	private Show show;
 
     public Rating() {
     }
@@ -64,12 +68,12 @@ public class Rating {
         this.user = user;
     }
 
-    public List<Show> getShows() {
-        return shows;
+    public Show getShow() {
+        return show;
     }
 
-    public void setShows(List<Show> shows) {
-        this.shows = shows;
+    public void setShow(Show show) {
+        this.show = show;
     }
     
 }
