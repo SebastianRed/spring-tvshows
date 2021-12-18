@@ -34,14 +34,19 @@
   <div class="content">
     <div class="container">
       <div class="row justify-content-center">
-
         <div class="mb-4">
           <h3>TV<strong>Shows</strong></h3>
           <h5>Title: <strong>${show.showTitle}</strong></h5>
           <h5>Network: <strong>${show.showNetwork}</strong></h5>
-          <p>Usuarios que calificaron este programa</p>
+          <div class="text-end">
+            <c:if test="${currentUser.id == creatorShow.id}">
+              <a href="/shows/${show.id}/edit" class="btn btn-warning">Modificar</a>
+            </c:if>
+          </div>
         </div>
+
         <div class="mb-5">
+          <h5>Usuarios que calificaron este programa</h5>
           <table class="table table-striped table-hover border border-primary">
             <thead>
               <tr>
@@ -59,33 +64,19 @@
             </tbody>
           </table>
         </div>
+
         <div>
-
-          <c:if test="${currentUser.id == creatorShow.id}">
-            <a href="/shows/${show.id}/edit" class="btn btn-info">Edit</a>
-          </c:if>
-
-          <form:form method="POST" action="/shows/${show.id}/add" modelAttribute="addRating">
-
+          <form:form method="post" action="/shows/${show.id}/add" modelAttribute="addRating">
             <form:hidden path="user.id" value="${currentUser.id}" />
-            <!--<form:hidden path="show" value="${show.id}" />-->
-            <div class="form-inline">
-              <form:label path="rating">Leave a Rating</form:label>
-
-              <div class="mx-3">
-                <form:input type="number" min="1" max="5" path="rating" class="form-control" />
+            <div style="width: 10em;" >
+              <form:label path="rating">Deja una calificación: </form:label>
+              <div class="input-group">                
+                <form:input type="number" min="1" max="5" path="rating" class="form-control" style="width: 4em;" />
                 <form:errors path="rating" />
-              </div>
-              <div>
-                <input type="submit" value="Rate...!" class="btn btn-primary" />
+                <input type="submit" value="Calificar" class="btn btn-success" />
               </div>
             </div>
-
           </form:form>
-
-          <button class="btn btn-primary">Modificar</button>
-          <p>Deja una calificación: </p>
-          <button class="btn btn-primary">Volver</button>
         </div>
 
         <div class="mt-5 pb-5 text-end">
